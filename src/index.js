@@ -19,7 +19,7 @@ const es1 = () => {
 const es2 = () => {
   return api.get('/esercizi/2')
     .then(({ data }) => {
-      const min = data.sort((a, b) => a- b).shift()
+      const min = data.slice().sort((a, b) => a- b).shift()
       const newData = data.map(value => value * min)
       return api.post('/esercizi/2', { data: newData })
     })

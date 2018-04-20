@@ -29,7 +29,7 @@ var es1 = function es1() {
 var es2 = function es2() {
   return api.get('/esercizi/2').then(function (_ref2) {
     var data = _ref2.data;
-    var min = data.sort(function (a, b) {
+    var min = data.slice().sort(function (a, b) {
       return a - b;
     }).shift();
     var newData = data.map(function (value) {
