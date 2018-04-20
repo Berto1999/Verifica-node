@@ -12,7 +12,8 @@ export default class Api{
   get(url, headers = {}){
     return fetch(this.apiUrl + url, {
       headers: {
-        'x-data': true
+        'x-data': true,
+        ...headers
       }
     })
       .then(this.parseInt)
@@ -22,7 +23,8 @@ export default class Api{
     return fetch(this.apiUrl + url, {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        ...headers
       },
       body: JSON.stringify(body)
     })

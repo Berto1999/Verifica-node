@@ -1,34 +1,35 @@
 import Api from './helpers/api'
+import packageJson from '../package'
 
 const apiUrl = 'http://192.168.1.231:8080'
 const api = new Api(apiUrl)
 
-const accreditamento = () => {
-  return api.post('/accreditamento', { nome: 'Denis Goryaynov' })
-    .then(console.log)
-    .catch(console.log)
-}
+const getEsUrl = id => `/esercizi/${id}`
+
+const accreditamento = () => api.post('/accreditamento', {nome: packageJson.author})
 
 const es1 = () => {
-  return api.get('/esercizi/1')
-    .then(({ data }) => data.reduce((accumulator, value) => accumulator + value , 0))
-    .then(data => api.post('/esercizi/1', { data }))
-    .catch(console.log)
+  const esercizio = getEsUrl(1)
+
+  return api.get(esercizio)
+    .then(({data}) => data.reduce((accumulator, value) => accumulator + value, 0))
 }
 
 const es2 = () => {
-  return api.get('/esercizi/2')
-    .then(({ data }) => {
-      const min = data.slice().sort((a, b) => a- b).shift()
-      const newData = data.map(value => value * min)
-      return api.post('/esercizi/2', { data: newData })
+  const esercizio = getEsUrl(2)
+
+  return api.get(esercizio)
+    .then(({data}) => {
+      const min = Math.min(...data)
+      return data.map(value => value * min)
     })
 }
 
 const es3 = () => {
-  return api.get('/esercizi/3')
-    .then(({ data }) => data.filter(value => value <= 3))
-    .then(data => api.post('/esercizi/3', { data }))
+  const esercizio = getEsUrl(3)
+
+  return api.get(esercizio)
+    .then(({data}) => data.filter(value => value <= 3))
 }
 
 accreditamento()
@@ -37,3 +38,8 @@ accreditamento()
     es2(),
     es3()
   ]))
+  .then(values => Promise.all(values.map((value, index) => {
+    return api.post(getEsUrl(index + 1, { data: value }))
+  })))
+  .then(console.log)
+  .catch(console.log)
