@@ -39,7 +39,7 @@ accreditamento()
     es3()
   ]))
   .then(values => Promise.all(values.map((value, index) => {
-    return api.post(getEsUrl(index + 1, { data: value }))
+    return api.post(getEsUrl(index + 1), { data: value })
   })))
   .then(console.log)
   .catch(console.log)
