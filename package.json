@@ -12,7 +12,7 @@
     "url": "git+https://github.com/simosquare/verifica-node.git"
   },
   "keywords": [],
-  "author": "Simone Piazza
+  "author": "Simone Piazza",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/simosquare/verifica-node/issues"
